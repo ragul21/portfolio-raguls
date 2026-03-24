@@ -7,6 +7,7 @@ const sequelize = require("./config/db");
 const cookieParser = require("cookie-parser");
 
 const authRoute = require("./routes/authRoutes");
+const authenticationMiddleware = require("./middlewares/authenticationMiddleware");
 
 const app = express();
 
@@ -15,7 +16,17 @@ app.use(express.json());
 app.use(cookieParser());
 
 //routes
+
 app.use("/api/auth", authRoute);
+
+app.get(
+  "/api/test",
+  authenticationMiddleware.tokenExist,
+  authenticationMiddleware.isAdmin,
+  (req, res) => {
+    res.json({ message: "you are allowed" });
+  },
+);
 
 const port = process.env.PORT || 5000;
 
