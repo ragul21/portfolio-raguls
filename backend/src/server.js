@@ -4,11 +4,18 @@ dotenv.config();
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/db");
+const cookieParser = require("cookie-parser");
+
+const authRoute = require("./routes/authRoutes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+
+//routes
+app.use("/api/auth", authRoute);
 
 const port = process.env.PORT || 5000;
 
